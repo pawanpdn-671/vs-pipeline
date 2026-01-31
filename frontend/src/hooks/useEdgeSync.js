@@ -1,12 +1,24 @@
 import { useEffect, useRef } from "react";
 import { useStore } from "../store/store";
-import { extractVariables, extractVariableMatches, findNodeByName } from "../utils/variableUtils";
+import { extractVariables, extractVariableMatches, findNodeByName, getNodeBaseName } from "../utils/variableUtils";
 
 export const useEdgeSync = (nodeId, text, setText) => {
 	const processedEdgesRef = useRef(new Set());
 
-	const edges = useStore((state) => state.edges);
-	const nodes = useStore((state) => state.nodes);
+	// Optimization: Select only necessary node data to prevent re-renders on position changes
+	const nodes = useStore(
+		(state) =>
+			state.nodes.map((n) => ({
+				id: n.id,
+				type: n.type,
+				data: { inputName: n.data?.inputName, outputType: n.data?.outputType },
+			})),
+		(oldState, newState) => JSON.stringify(oldState) === JSON.stringify(newState),
+	);
+	const edges = useStore(
+		(state) => state.edges,
+		(oldState, newState) => JSON.stringify(oldState) === JSON.stringify(newState),
+	);
 	const onEdgesChange = useStore((state) => state.onEdgesChange);
 	const addEdgeProgrammatic = useStore((state) => state.addEdgeProgrammatic);
 
@@ -18,7 +30,7 @@ export const useEdgeSync = (nodeId, text, setText) => {
 			if (!processedEdgesRef.current.has(edge.id)) {
 				const sourceNode = nodes.find((n) => n.id === edge.source);
 				if (sourceNode) {
-					const nodeName = sourceNode.data?.inputName || sourceNode.id.replace("customInput-", "input_");
+					const nodeName = getNodeBaseName(sourceNode);
 					let outputName = "text";
 					if (sourceNode.data?.outputType === "File") outputName = "file";
 					if (sourceNode.type === "llm") outputName = "response";
@@ -59,7 +71,7 @@ export const useEdgeSync = (nodeId, text, setText) => {
 		const edgesToRemove = connectedEdges.filter((edge) => {
 			const sourceNode = nodes.find((n) => n.id === edge.source);
 			if (!sourceNode) return true;
-			const nodeName = sourceNode.data?.inputName || sourceNode.id.replace("customInput-", "input_");
+			const nodeName = getNodeBaseName(sourceNode);
 			return !uniqueVars.includes(nodeName);
 		});
 

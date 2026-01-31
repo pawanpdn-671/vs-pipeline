@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef } from "react";
 import { getAvailableNodes, getNodeOutputs, parseCursorContext } from "../utils/variableUtils";
 
-export const useVariableAutocomplete = (text, setText, textareaRef, nodeRef) => {
+export const useVariableAutocomplete = (nodeId, text, setText, textareaRef, nodeRef) => {
 	const [showSuggestions, setShowSuggestions] = useState(false);
 	const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
 	const [selectionStep, setSelectionStep] = useState(1);
@@ -23,14 +23,9 @@ export const useVariableAutocomplete = (text, setText, textareaRef, nodeRef) => 
 				// Position the dropdown relative to the cursor/node
 				if (textareaRef.current) {
 					const rect = textareaRef.current.getBoundingClientRect();
-					let top = rect.bottom + window.scrollY + 5;
-					let left = rect.left + window.scrollX;
-
-					if (nodeRef && nodeRef.current) {
-						const nodeRect = nodeRef.current.getBoundingClientRect();
-						top = rect.bottom - nodeRect.top + 5;
-						left = rect.left - nodeRect.left;
-					}
+					// Use viewport coordinates since the dropdown is in a Portal
+					const top = rect.bottom + 5;
+					const left = rect.left;
 
 					setDropdownPosition({
 						top,
@@ -39,7 +34,7 @@ export const useVariableAutocomplete = (text, setText, textareaRef, nodeRef) => 
 					});
 				}
 				const typedText = context.content;
-				const nodeList = getAvailableNodes();
+				const nodeList = getAvailableNodes().filter((n) => n.nodeId !== nodeId);
 
 				// If user typed dot (e.g. "input_1."), switch to Step 2 (Outputs)
 				if (typedText.includes(".")) {
@@ -65,7 +60,7 @@ export const useVariableAutocomplete = (text, setText, textareaRef, nodeRef) => 
 			}
 			setShowSuggestions(false);
 		},
-		[setText, textareaRef, nodeRef],
+		[setText, textareaRef, nodeId],
 	);
 
 	const selectItem = useCallback(
@@ -80,13 +75,6 @@ export const useVariableAutocomplete = (text, setText, textareaRef, nodeRef) => 
 			const cursorPosition = activeElement.selectionStart;
 
 			const context = parseCursorContext(text, cursorPosition);
-
-			// Step 2 is more lenient as we might have just typed a dot which breaks simple context parsing
-			// const isSafe = context.isInsideVariable || selectionStep === 2;
-
-			// if (!isSafe) {
-			// Fallback or abort if context is lost
-			// }
 
 			if (selectionStep === 1) {
 				// Step 1: User selected a Node from the list

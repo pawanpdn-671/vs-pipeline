@@ -1,3 +1,4 @@
+import ReactDOM from "react-dom";
 const dropdownStyles = {
 	container: {
 		position: "fixed",
@@ -140,6 +141,7 @@ const OutputListItem = ({ output, onClick, isLast }) => (
 	</div>
 );
 
+
 export const VariableSuggestionDropdown = ({
 	show,
 	position,
@@ -152,11 +154,11 @@ export const VariableSuggestionDropdown = ({
 }) => {
 	if (!show) return null;
 
-	return (
+	return ReactDOM.createPortal(
 		<div
 			style={{
 				...dropdownStyles.container,
-				position: "absolute", // Changed from fixed
+				position: "fixed",
 				top: position.top,
 				left: position.left,
 				width: Math.max(position.width, 280),
@@ -195,6 +197,7 @@ export const VariableSuggestionDropdown = ({
 					))}
 				</div>
 			)}
-		</div>
+		</div>,
+		document.body,
 	);
 };

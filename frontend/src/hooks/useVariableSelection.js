@@ -5,7 +5,7 @@ import { useVariableAutocomplete } from "./useVariableAutocomplete";
 export const useVariableSelection = (nodeId, text, setText, textareaRef, nodeRef) => {
 	useEdgeSync(nodeId, text, setText);
 
-	const autocomplete = useVariableAutocomplete(text, setText, textareaRef, nodeRef);
+	const autocomplete = useVariableAutocomplete(nodeId, text, setText, textareaRef, nodeRef);
 
 	return {
 		variables: extractVariables(text),
