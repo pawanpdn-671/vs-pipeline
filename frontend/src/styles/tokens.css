@@ -1,0 +1,58 @@
+/* tokens.css - Design tokens with dark/light theme support */
+
+:root,
+[data-theme="dark"] {
+	/* === Backgrounds === */
+	--bg-app: #131018;
+	--bg-surface: #1a1625;
+	--bg-surface-elevated: #221d2e;
+	--bg-input: #0f0c14;
+
+	/* === Borders === */
+	--border-subtle: #2d2640;
+	--border-hover: #3d3456;
+
+	/* === Primary (Purple) === */
+	--color-primary: #7c3aed;
+	--color-header: #3b1f70;
+
+	/* === Text === */
+	--text-primary: #e6ddfd;
+	--text-muted: #a8a2b6;
+
+	/* === Typography === */
+	--font-sans: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+	/* === Border Radius === */
+	--radius-node: 12px;
+	--radius-input: 6px;
+
+	/* === Shadows === */
+	--shadow-node: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+	--shadow-node-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 0 30px rgba(124, 58, 237, 0.15);
+}
+
+[data-theme="light"] {
+	/* === Backgrounds === */
+	--bg-app: #f8fafc;
+	--bg-surface: #ffffff;
+	--bg-surface-elevated: #f1f5f9;
+	--bg-input: #ffffff;
+
+	/* === Borders === */
+	--border-subtle: #e2e8f0;
+	--border-hover: #cbd5e1;
+
+	/* === Primary (Purple) === */
+	--color-primary: #7c3aed;
+	--color-header: #6d28d9;
+
+	/* === Text === */
+	--text-primary: #1e293b;
+	--text-muted: #64748b;
+
+	/* === Shadows === */
+	/* Softer shadows for light mode */
+	--shadow-node: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+	--shadow-node-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}

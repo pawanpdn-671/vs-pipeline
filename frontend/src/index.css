@@ -1,13 +1,111 @@
+/* index.css - Global styles with VectorShift-inspired dark theme */
+
+/* Import design tokens and components */
+@import "./styles/tokens.css";
+@import "./styles/components.css";
+
+/* Google Fonts - Plus Jakarta Sans */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+
+/* === Reset & Base === */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 16px;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	margin: 0;
+	padding: 0;
+	font-family: var(--font-sans);
+	font-size: var(--text-base);
+	color: var(--text-primary);
+	background-color: var(--bg-app);
+	line-height: 1.5;
+}
+
+/* === Global Element Styles === */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0;
+	font-weight: var(--font-semibold);
+	color: var(--text-primary);
+}
+
+p {
+	margin: 0;
+	color: var(--text-secondary);
+}
+
+a {
+	color: var(--primary-400);
+	text-decoration: none;
+	transition: color var(--transition-fast);
+}
+
+a:hover {
+	color: var(--primary-300);
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+	font-family: var(--font-mono);
+	font-size: 0.9em;
+	padding: 0.2em 0.4em;
+	background: var(--bg-surface);
+	border-radius: var(--radius-sm);
+}
+
+/* === Selection === */
+::selection {
+	background: var(--primary-500);
+	color: white;
+}
+
+/* === Scrollbar Styling === */
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--bg-app);
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--border-default);
+	border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--primary-700);
+}
+
+/* === App Layout === */
+.app {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+.app-main {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+/* === Animations === */
+@keyframes pending-dash {
+	to {
+		stroke-dashoffset: -12;
+	}
 }
